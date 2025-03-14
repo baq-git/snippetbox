@@ -78,7 +78,6 @@ func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	var form userLoginForm
-
 	err := app.decodePostForm(r, &form)
 	if err != nil {
 		app.clientError(w, http.StatusBadRequest)
@@ -99,7 +98,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	id, err := app.users.Authenticate(form.Email, form.Password)
 	if err != nil {
 		if errors.Is(err, models.ErrInvalidCredentials) {
-			form.AddNonFieldError("Email or Password is incorrect")
+			form.AddNonFieldError("Email or password is incorrect")
 			data := app.newTemplateData(r)
 			data.Form = form
 			app.render(w, http.StatusUnprocessableEntity, "login.tmpl.html", data)
